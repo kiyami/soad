@@ -37,24 +37,28 @@ How to use in Python interactively:
 
 from astrostat.uncertainty import AsymmetricData
 
-# Initial definitions and random sample generation
-
+"""
+Initial definitions and random sample generation
+"""
 A = AsymmetricData(10,0.5,1.2,N=100000) # (mean, negative sigma, positive sigma, sample size)
 B = AsymmetricData(10,0.5,1.2,N=100000)
 
-# Do the calculation
-
+"""
+Do the calculation
+"""
 C = A + B
 
-# Print / Plot the results
-
+"""
+Print / Plot the results
+"""
 print(C)
 C.plot_data()
 C.plot_pdf()
 C.plot_log_likelihood()
 
-# Another calculation
-
+"""
+Another calculation
+"""
 D = (0.5 * A)**0.5 + (B / 2)**2.0
 print(D)
 
