@@ -66,7 +66,7 @@ class AsymmetricData:
         return output.format(self.mu, self.sigma_n, self.sigma_p, self.confidence)
 
     @classmethod
-    def new(cls, mu=10.0, sigma_n=1.0, sigma_p=1.5, N=10000):
+    def new(cls, mu=10.0, sigma_n=1.0, sigma_p=1.0, N=10000):
         return cls(mu, sigma_n, sigma_p, N)
 
     def integrate(self):
