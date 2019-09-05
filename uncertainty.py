@@ -7,7 +7,7 @@ import sys
 
 
 class AsymmetricData:
-    def __init__(self, mu=10.0, sigma_n=1.0, sigma_p=1.0, N=10000, creation_type='by_constructor', data=[]):
+    def __init__(self, mu=10.0, sigma_n=1.0, sigma_p=1.0, N=10000, creation_type='by_constructor', data=None):
         """
         :param mu: Mode of the distribution, the most probable value
         :param sigma_n: Pegative sigma
@@ -18,10 +18,15 @@ class AsymmetricData:
         self.sigma_n = sigma_n
         self.sigma_p = sigma_p
         self.N = int(N)
-        self.data = np.asarray(data)
-        self.confidence = 1.0 # sigma
+        self.confidence = 1.0  # sigma
         self.creation_type = creation_type
 
+        if not data:
+            self.data = np.asarray([])
+        else:
+            self.data = np.asarray(data)
+
+        self.bin_value = 50
 
         if str(creation_type) == 'by_constructor':
             self.x_limits = [self.mu - 4.0*self.sigma_n, self.mu + 4.0*sigma_p]
@@ -40,9 +45,6 @@ class AsymmetricData:
             self.generate()
 
         elif str(creation_type) == 'by_operation':
-            #self.mu = None
-            #self.sigma_n = None
-            #self.sigma_p = None
             self.N = self.data.size
 
             self.fit()
@@ -59,9 +61,6 @@ class AsymmetricData:
             self.cdf = self.calculate_cdf()
             self.inverse_cdf = self.calculate_inverse_cdf()
 
-
-
-
     def __str__(self):
         output = "Value = {:.2e} ( - {:.2e} , + {:.2e} )\n({:.1f} sigma confidence interval)"
         return output.format(self.mu, self.sigma_n, self.sigma_p, self.confidence)
@@ -73,7 +72,7 @@ class AsymmetricData:
     def integrate(self):
         delta_x = self.x_limits[1] - self.x_limits[0]
         c = delta_x / (self.N - 1)
-        #x_values = np.linspace(self.x_limits[0], self.x_limits[1], self.N, dtype=float)
+        # x_values = np.linspace(self.x_limits[0], self.x_limits[1], self.N, dtype=float)
         area = np.sum(c * self.pdf(self.x_values))
         return area
 
@@ -130,11 +129,12 @@ class AsymmetricData:
         gau = A * np.exp(-D ** 2.0)
         return gau
 
-    def fit(self, expected_values=[]):
+    def fit(self, expected_values=None):
         y, x, _ = plt.hist(self.data, bins=int(self.N/250))
         plt.clf()
         x = (x[1:] + x[:-1]) / 2  # for len(x)==len(y)
 
+        mod = None
         max_y = max(y)
         for i in range(len(y)):
             if y[i] == max_y:
@@ -145,9 +145,9 @@ class AsymmetricData:
         max_data = max(self.data)
         norm = 1000.0
 
-        if expected_values == []:
+        if not expected_values:
             expected_values = norm, mod, (mod - min_data) * 0.1, (max_data - mod) * 0.1
-            #expected_values = norm, mod, 1.0, 1.0
+
         expected = (expected_values[0], expected_values[1], expected_values[2], expected_values[3])
         params, cov = curve_fit(self.fit_func, x, y, expected, method='trf')
         self.norm = params[0]
@@ -168,7 +168,7 @@ class AsymmetricData:
         delta = abs(self.mu - self.sigma_p) * delta_steps
         current_likelihood = self.log_likelihood(current_value)
 
-        while (abs(current_likelihood) < abs(target_likelihood)):
+        while abs(current_likelihood) < abs(target_likelihood):
             current_value += delta
             current_likelihood = self.log_likelihood(current_value)
         positive_limit = current_value
@@ -177,39 +177,75 @@ class AsymmetricData:
         delta = abs(self.mu - self.sigma_n) * delta_steps
         current_likelihood = self.log_likelihood(current_value)
 
-        while (abs(current_likelihood) < abs(target_likelihood)):
+        while abs(current_likelihood) < abs(target_likelihood):
             current_value -= delta
             current_likelihood = self.log_likelihood(current_value)
         negative_limit = current_value
         print("interval found")
         return [self.mu - negative_limit, positive_limit - self.mu]
 
-    def plot_pdf(self):
+    def plot_pdf(self, show=True, save=False):
         plt.plot(self.x_values, self.pdf_values)
-        plt.show()
 
-    def plot_log_likelihood(self):
+        if save:
+            plt.savefig("plot_pdf.png", dpi=300)
+
+        if show:
+            plt.show()
+
+    def plot_log_likelihood(self, show=True, save=False):
         plt.plot(self.x_values, self.log_likelihood(self.x_values))
-        plt.ylim([-5,0.5])
-        plt.show()
+        plt.ylim([-5, 0.5])
 
-    def plot_cdf(self):
+        if save:
+            plt.savefig("plot_log_likelihood.png", dpi=300)
+
+        if show:
+            plt.show()
+
+    def plot_cdf(self, show=True, save=False):
         plt.plot(self.x_values, self.cdf(self.x_values))
-        plt.show()
 
-    def plot_data(self, bin=50):
-        plt.hist(self.data, bins=bin, density=True)
-        plt.show()
+        if save:
+            plt.savefig("plot_cdf.png", dpi=300)
 
-    def plot_data_and_pdf(self, bin=50):
-        plt.hist(self.data, bins=bin, density=True)
+        if show:
+            plt.show()
+
+    def plot_data(self, bins=None, show=True, save=False):
+        if not bins:
+            bins = self.bin_value
+
+        plt.hist(self.data, bins=bins, density=True)
+
+        if save:
+            plt.savefig("plot_data.png", dpi=300)
+
+        if show:
+            plt.show()
+
+    def plot_data_and_pdf(self, bins=None, show=True, save=False):
+        if not bins:
+            bins = self.bin_value
+
+        plt.hist(self.data, bins=bins, density=True)
         plt.plot(self.x_values, self.pdf_values)
-        plt.show()
 
-    def plot_pdf_cdf(self):
+        if save:
+            plt.savefig("plot_data_and_pdf.png", dpi=300)
+
+        if show:
+            plt.show()
+
+    def plot_pdf_cdf(self, show=True, save=False):
         plt.plot(self.x_values, self.cdf_values)
         plt.plot(self.x_values, self.pdf_values)
-        plt.show()
+
+        if save:
+            plt.savefig("plot_pdf_cdf.png", dpi=300)
+
+        if show:
+            plt.show()
 
     def __add__(self, other):
         if isinstance(other, self.__class__):

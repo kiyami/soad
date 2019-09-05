@@ -16,9 +16,8 @@ Defined operations:
 These operations can be used between "AsymmetricData" objects
 or between an "AsymmetricData" object and an integer/float value.
 
-######################################################################
 
-Example:
+#### Example:
 Let "A" and "B" two measured quantity with asymmetric uncertainties:
 
 A=10(-0.5,+1.2)
@@ -31,38 +30,35 @@ Steps:
 - Define the mathematical operation
 - Print / Plot the results
 
-###################################
-How to use in Python interactively:
-###################################
+#### How to use in Python interactively:
 
 from astrostat.uncertainty import AsymmetricData
 
-"""
-Initial definitions and random sample generation
-"""
+####### Initial definitions and random sample generation
+
 A = AsymmetricData(10,0.5,1.2,N=100000) # (mean, negative sigma, positive sigma, sample size)
+
 B = AsymmetricData(10,0.5,1.2,N=100000)
 
-"""
-Do the calculation
-"""
+####### Do the calculation
+
 C = A + B
 
-"""
-Print / Plot the results
-"""
+####### Print / Plot the results
+
 print(C)
-C.plot_data()
-C.plot_pdf()
+C.plot_data(show=True, save=False)
+C.plot_pdf(show=True, save=True)
 C.plot_log_likelihood()
 
-"""
-Another calculation
-"""
+####### Another calculation
+
 D = (0.5 * A)**0.5 + (B / 2)**2.0
 print(D)
 
-###################################
+
+
+#### Author
 
 M. Kıyami ERDİM
 kiyami_erdim@hotmail.com
