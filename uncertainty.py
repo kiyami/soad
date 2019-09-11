@@ -185,7 +185,12 @@ class AsymmetricData:
         return [self.mu - negative_limit, positive_limit - self.mu]
 
     def plot_pdf(self, show=True, save=False):
-        plt.plot(self.x_values, self.pdf_values)
+
+        plt.clf()
+        plt.plot(self.x_values, self.pdf_values, color="blue")
+
+        plt.xlabel("x")
+        plt.ylabel("prob")
 
         if save:
             plt.savefig("plot_pdf.png", dpi=300)
@@ -194,8 +199,14 @@ class AsymmetricData:
             plt.show()
 
     def plot_log_likelihood(self, show=True, save=False):
+        plt.clf()
         plt.plot(self.x_values, self.log_likelihood(self.x_values))
         plt.ylim([-5, 0.5])
+
+        plt.xlabel("x")
+        plt.ylabel("ln L")
+
+        plt.axhline(y=-0.5, color="black", ls="--")
 
         if save:
             plt.savefig("plot_log_likelihood.png", dpi=300)
@@ -216,7 +227,8 @@ class AsymmetricData:
         if not bins:
             bins = self.bin_value
 
-        plt.hist(self.data, bins=bins, density=True)
+        plt.clf()
+        plt.hist(self.data, bins=bins, density=True, color="green", alpha=0.7)
 
         if save:
             plt.savefig("plot_data.png", dpi=300)
@@ -228,8 +240,12 @@ class AsymmetricData:
         if not bins:
             bins = self.bin_value
 
-        plt.hist(self.data, bins=bins, density=True)
-        plt.plot(self.x_values, self.pdf_values)
+        plt.clf()
+        plt.hist(self.data, bins=bins, density=True, color="green", alpha=0.7)
+        plt.plot(self.x_values, self.pdf_values, color="blue")
+
+        plt.xlabel("x")
+        plt.ylabel("prob")
 
         if save:
             plt.savefig("plot_data_and_pdf.png", dpi=300)
