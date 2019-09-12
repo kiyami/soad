@@ -25,10 +25,11 @@ class AsymmetricData:
             self.data = np.asarray([])
         else:
             self.data = np.asarray(data)
+            self.creation_type = 'by_operation'
 
         self.bin_value = 50
 
-        if str(creation_type) == 'by_constructor':
+        if str(self.creation_type) == 'by_constructor':
             self.x_limits = [self.mu - 4.0*self.sigma_n, self.mu + 4.0*sigma_p]
             self.x_values = np.linspace(self.x_limits[0], self.x_limits[1], self.N)
 
@@ -44,7 +45,7 @@ class AsymmetricData:
 
             self.generate()
 
-        elif str(creation_type) == 'by_operation':
+        elif str(self.creation_type) == 'by_operation':
             self.N = self.data.size
 
             self.fit()
@@ -85,8 +86,15 @@ class AsymmetricData:
         A = self.norm / (2.0 * np.pi) ** 0.5
         B = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
         C = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
-        D = (self.mu - x) / (B + (C * (x - self.mu)))
+        D = (self.mu - x) / ((B + (C * (x - self.mu)))*(2.0**0.5))
         value = A * np.exp(-D ** 2.0)
+        """
+        B = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
+        C = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
+        D = (self.mu - x) / (B + (C * (x - self.mu)))
+        A = self.norm / (2.0 * np.pi * (B + (C * (x - self.mu)))**2.0) ** 0.5
+        value = A * np.exp(-D ** 2.0)
+        """
         return value
 
     def log_likelihood(self, x):
