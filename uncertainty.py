@@ -133,7 +133,7 @@ class AsymmetricData:
         A = norm / (2.0 * np.pi) ** 0.5
         B = (2.0 * sigma_p * sigma_n) / (sigma_p + sigma_n)
         C = (sigma_p - sigma_n) / (sigma_p + sigma_n)
-        D = (mu - x) / (B + (C * (x - mu)))
+        D = (mu - x) / ((B + (C * (x - mu)))*(2.0**0.5))
         gau = A * np.exp(-D ** 2.0)
         return gau
 
