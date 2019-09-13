@@ -55,7 +55,7 @@ def generate_control_variable(*args):
 
 
 def generate_multiple_variable():
-    n = 2
+    n = 15
     asym_index = 0.2
     mu, sigma_n, sigma_p = Data.control_variable.get_params()
 
@@ -197,8 +197,8 @@ if __name__ == "__main__":
     Data.print_variables()
 
 
-    #CompareMethods.calculate_sum()
-    CompareMethods.calculate_mul()
+    CompareMethods.calculate_sum()
+    #CompareMethods.calculate_mul()
 
     CompareMethods.print_results()
     CompareMethods.plot_results(save=True)

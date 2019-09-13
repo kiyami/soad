@@ -10,8 +10,7 @@ Selected PDF to represent asymmetric data is "Variable Gaussian" which is define
 
 
 Defined operations:
-"sum, subtract, multiply, divide, power"
-"+, -, x, /, **"
+[sum, subtract, multiply, divide, power], [+, -, x, /, **]
 
 These operations can be used between "AsymmetricData" objects
 or between an "AsymmetricData" object and an integer/float value.

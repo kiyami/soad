@@ -87,7 +87,7 @@ class AsymmetricData:
         par_2 = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
         par_3 = (-1.0/2.0) * ((self.mu - x)/(par_1 + par_2*(x - self.mu)))**2.0
         par_4 = self.norm / (2.0 * np.pi)**0.5
-        value = par_4 *np.exp(par_3)
+        value = par_4 * np.exp(par_3)
         """
         A = self.norm / (2.0 * np.pi) ** 0.5
         B = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
@@ -270,9 +270,13 @@ class AsymmetricData:
             bins = self.bin_value
 
         plt.clf()
-        plt.hist(self.data, bins=bins, density=True, color="green", alpha=0.7)
+        plt.hist(self.data, bins=bins, density=True, color="green", alpha=0.6)
         plt.plot(self.x_values, self.pdf_values, color="blue")
 
+        plt.plot([10, 10], [0, 0.4], ls="--", color="black", lw=2)
+        plt.plot([9, 9], [0, 0.245], ls="--", color="black", lw=1.2)
+        plt.plot([11, 11], [0, 0.245], ls="--", color="black", lw=1.2)
+        plt.xticks([5,6,7,8,9,10,11,12,13,14,15])
         plt.xlabel("x")
         plt.ylabel("prob")
 

@@ -2,16 +2,16 @@ import uncertainty as asym
 import matplotlib.pyplot as plt
 import numpy as np
 
-a = asym.AsymmetricData(2.03, 0.48, 0.48,N=50000)
-b = asym.AsymmetricData(1.93e+00, 4.17e-01 , 5.32e-01,N=50000)
+a = asym.AsymmetricData(20.0, 1.6007810593582121, 1.6007810593582121,N=100000)
+b = asym.AsymmetricData(20.27602675930529, 1.521759265471423, 1.916585620152389,N=100000)
 
 
-plt.plot(a.x_values,a.pdf_values)
-plt.plot(b.x_values,b.pdf_values)
+plt.plot(a.x_values,a.pdf_values, color="deepskyblue")
+plt.plot(b.x_values,b.pdf_values, color="tomato")
 
 plt.ylim(ymin=0)
 plt.xlabel("x")
-plt.ylabel("Probability")
+plt.ylabel("prob")
 plt.savefig("diff.png", dpi=300)
 plt.show()
 
