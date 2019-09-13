@@ -273,13 +273,6 @@ class AsymmetricData:
         plt.hist(self.data, bins=bins, density=True, color="green", alpha=0.6)
         plt.plot(self.x_values, self.pdf_values, color="blue")
 
-        plt.plot([10, 10], [0, 0.4], ls="--", color="black", lw=2)
-        plt.plot([9, 9], [0, 0.245], ls="--", color="black", lw=1.2)
-        plt.plot([11, 11], [0, 0.245], ls="--", color="black", lw=1.2)
-        plt.xticks([5,6,7,8,9,10,11,12,13,14,15])
-        plt.xlabel("x")
-        plt.ylabel("prob")
-
         if save:
             plt.savefig("plot_data_and_pdf.png", dpi=300)
 
