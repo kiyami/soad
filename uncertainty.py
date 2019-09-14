@@ -136,9 +136,13 @@ class AsymmetricData:
         return inverse_cdf
 
     def generate(self):
+        rnd_prob = np.random.uniform(0, 1, self.N)
+        self.data = self.inverse_cdf(rnd_prob)
+        """
         for i in range(self.N):
             rnd_prob = random.uniform(0, 1)
             self.data = np.append(self.data, self.inverse_cdf(rnd_prob))
+        """
 
     @staticmethod
     def fit_func(x, norm, mu, sigma_n, sigma_p):
