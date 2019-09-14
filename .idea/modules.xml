@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/astrostat.iml" filepath="$PROJECT_DIR$/.idea/astrostat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/stad.iml" filepath="$PROJECT_DIR$/.idea/stad.iml" />
     </modules>
   </component>
 </project>

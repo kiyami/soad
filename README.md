@@ -1,6 +1,6 @@
-# stad (statistics of asymmetric distributions)
+# STAD (Statistics of Asymmetric Distributions)
 
-"astrostat.uncertainty" module is for handling measurement values with asymmetric uncertainties.
+"stad.uncertainty" module is for handling measurement values with asymmetric uncertainties.
 
 Measurement values are sampling with a pre-defined Probability Density Function (PDF).
 
@@ -31,7 +31,7 @@ Steps:
 
 #### How to use in Python interactively:
 
-from astrostat.uncertainty import AsymmetricData
+from stad.uncertainty import AsymmetricData
 
 ####### Initial definitions and random sample generation
 
