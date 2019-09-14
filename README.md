@@ -1,4 +1,4 @@
-# astrostat
+# stad (statistics of asymmetric distributions)
 
 "astrostat.uncertainty" module is for handling measurement values with asymmetric uncertainties.
 
