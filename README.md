@@ -1,6 +1,6 @@
-# STAD (Statistics of Asymmetric Distributions)
+# SOAD (Statistics of Asymmetric Distributions)
 
-"stad.uncertainty" module is for handling measurement values with asymmetric uncertainties.
+"soad.uncertainty" module is for handling measurement values with asymmetric uncertainties.
 
 Measurement values are sampling with a pre-defined Probability Density Function (PDF).
 
@@ -31,7 +31,7 @@ Steps:
 
 #### How to use in Python interactively:
 
-from stad.uncertainty import AsymmetricData
+from soad.uncertainty import AsymmetricData
 
 ####### Initial definitions and random sample generation
 
