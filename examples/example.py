@@ -1,7 +1,7 @@
-from uncertainty import AsymmetricData as asyd
+from src.uncertainty import AsymmetricData
 
-a=asyd(10,1,1.5,100000)
-b=asyd(20,1.5,1.0,100000)
+a=AsymmetricData(10,1,1.5,10000)
+b=AsymmetricData(20,1.5,1.0,10000)
 c = a / b
 #c.plot_data_and_pdf(show=True, save=False)
 #a.plot_pdf(show=True, save=False)

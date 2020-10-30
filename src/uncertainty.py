@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.interpolate as interpolate
 from scipy.optimize import curve_fit
-import random
 import sys
 
 
@@ -10,7 +9,7 @@ class AsymmetricData:
     def __init__(self, mu=10.0, sigma_n=1.0, sigma_p=1.0, N=10000, creation_type='by_constructor', data=[]):
         """
         :param mu: Mode of the distribution, the most probable value
-        :param sigma_n: Pegative sigma
+        :param sigma_n: Negative sigma
         :param sigma_p: Positive sigma
         :param N: Sample size
         """
@@ -18,19 +17,30 @@ class AsymmetricData:
         self.sigma_n = sigma_n
         self.sigma_p = sigma_p
         self.N = int(N)
+
         self.confidence = 1.0  # sigma
+
+        self.confidence_factor = 10.0
+
+        self.confidence_factor_n = self.confidence_factor * self.sigma_p / (self.sigma_n + self.sigma_p)
+        self.confidence_factor_p = self.confidence_factor * self.sigma_n / (self.sigma_n + self.sigma_p)
+
+        print("#########", self.confidence_factor_n, self.confidence_factor_p)
+
         self.creation_type = creation_type
 
         if not any(data):
             self.data = np.asarray([])
         else:
             self.data = np.asarray(data)
-            #self.creation_type = 'by_operation'
 
-        self.bin_value = 50
+        if N < 1000:
+            self.bin_value = 50
+        else:
+            self.bin_value = 120
 
         if str(self.creation_type) == 'by_constructor':
-            self.x_limits = [self.mu - 5.0*self.sigma_n, self.mu + 5.0*sigma_p]
+            self.x_limits = [self.mu - self.confidence_factor_n*self.sigma_n, self.mu + self.confidence_factor_p*self.sigma_p]
             self.x_values = np.linspace(self.x_limits[0], self.x_limits[1], self.N)
 
             self.norm = 1.0
@@ -49,9 +59,8 @@ class AsymmetricData:
             self.N = self.data.size
 
             self.fit()
-            #self.sigma_n, self.sigma_p = self.estimate()
 
-            self.x_limits = [self.mu - 5.0*self.sigma_n, self.mu + 5.0*self.sigma_p]
+            self.x_limits = [self.mu - self.confidence_factor_n*self.sigma_n, self.mu + self.confidence_factor_p*self.sigma_p]
             self.x_values = np.linspace(self.x_limits[0], self.x_limits[1], self.N)
 
             self.norm = 1.0
@@ -73,7 +82,6 @@ class AsymmetricData:
     def integrate(self):
         delta_x = self.x_limits[1] - self.x_limits[0]
         c = delta_x / (self.N - 1)
-        # x_values = np.linspace(self.x_limits[0], self.x_limits[1], self.N, dtype=float)
         area = np.sum(c * self.pdf(self.x_values))
         return area
 
@@ -88,33 +96,14 @@ class AsymmetricData:
         par_3 = (-1.0/2.0) * ((self.mu - x)/(par_1 + par_2*(x - self.mu)))**2.0
         par_4 = self.norm / (2.0 * np.pi)**0.5
         value = par_4 * np.exp(par_3)
-        """
-        A = self.norm / (2.0 * np.pi) ** 0.5
-        B = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
-        C = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
-        D = (self.mu - x) / ((B + (C * (x - self.mu)))*(2.0**0.5))
-        value = A * np.exp(-D ** 2.0)
 
-        B = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
-        C = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
-        D = (self.mu - x) / (B + (C * (x - self.mu)))
-        A = self.norm / (2.0 * np.pi * (B + (C * (x - self.mu)))**2.0) ** 0.5
-        value = A * np.exp(-D ** 2.0)
-        """
         return value
 
     def log_likelihood(self, x):
         par_1 = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
         par_2 = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
         value = (-1.0/2.0) * ((self.mu - x)/(par_1 + par_2*(x - self.mu)))**2.0
-        """
-        A = -1.0 / 2.0
-        B = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
-        C = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
-        D = (self.mu - x) / (B + C * (x - self.mu))
-        value = A * D ** 2.0
-        return value
-        """
+
         return value
 
     def calculate_cdf_values(self):
@@ -138,11 +127,6 @@ class AsymmetricData:
     def generate(self):
         rnd_prob = np.random.uniform(0, 1, self.N)
         self.data = self.inverse_cdf(rnd_prob)
-        """
-        for i in range(self.N):
-            rnd_prob = random.uniform(0, 1)
-            self.data = np.append(self.data, self.inverse_cdf(rnd_prob))
-        """
 
     @staticmethod
     def fit_func(x, norm, mu, sigma_n, sigma_p):
@@ -151,31 +135,27 @@ class AsymmetricData:
         par_3 = (-1.0 / 2.0) * ((mu - x) / (par_1 + par_2 * (x - mu))) ** 2.0
         par_4 = norm / (2.0 * np.pi) ** 0.5
         value = par_4 * np.exp(par_3)
-        """
-        A = norm / (2.0 * np.pi) ** 0.5
-        B = (2.0 * sigma_p * sigma_n) / (sigma_p + sigma_n)
-        C = (sigma_p - sigma_n) / (sigma_p + sigma_n)
-        D = (mu - x) / ((B + (C * (x - mu)))*(2.0**0.5))
-        gau = A * np.exp(-D ** 2.0)
-        return gau
-        """
+
         return value
 
     def fit(self, expected_values=None):
         y, x, _ = plt.hist(self.data, bins=int(self.N/250))
         plt.clf()
+
         x = (x[1:] + x[:-1]) / 2  # for len(x)==len(y)
 
         mod = None
         max_y = max(y)
+
         for i in range(len(y)):
             if y[i] == max_y:
                 mod = x[i]
 
         print("mod", mod)
-        #print(len(self.data))
+
         min_data = min(self.data)
         max_data = max(self.data)
+
         norm = 1000.0
 
         if not expected_values:
@@ -183,9 +163,11 @@ class AsymmetricData:
 
         expected = (expected_values[0], expected_values[1], expected_values[2], expected_values[3])
         params, cov = curve_fit(self.fit_func, x, y, expected, method='trf')
+
         self.norm = params[0]
         self.mu = params[1]
         print("params", params)
+
         if params[2] > 0.0:
             self.sigma_n = (params[2])
             self.sigma_p = (params[3])
@@ -214,6 +196,7 @@ class AsymmetricData:
             current_value -= delta
             current_likelihood = self.log_likelihood(current_value)
         negative_limit = current_value
+
         print("interval found")
         return [self.mu - negative_limit, positive_limit - self.mu]
 

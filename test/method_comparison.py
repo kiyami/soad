@@ -1,4 +1,4 @@
-import uncertainty as asym
+import src.uncertainty as asym
 import matplotlib.pyplot as plt
 import numpy as np
 

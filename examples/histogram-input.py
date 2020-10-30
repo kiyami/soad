@@ -1,4 +1,4 @@
-from uncertainty import AsymmetricData as asyd
+from src.uncertainty import AsymmetricData as asyd
 import random
 import matplotlib.pyplot as plt
 import numpy as np

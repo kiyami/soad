@@ -1,0 +1,8 @@
+venv
+soad.egg-info
+soad_pkg_kiyami.egg-info
+.idea
+build
+dist
+**.pyc
+**.DS_Store
