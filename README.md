@@ -65,6 +65,7 @@ C.plot_log_likelihood()
 ####### Another calculation
 
 D = (0.5 * A)**0.5 + (B / 2)**2.0
+
 print(D)
 
 
