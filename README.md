@@ -68,7 +68,8 @@ print(D)
 
 #### Author
 
-M. Kıyami ERDİM
-
-mkiyami@yildiz.edu.tr
-kiyami_erdim@outlook.com
+> M. Kıyami ERDİM
+> 
+> mkiyami@yildiz.edu.tr
+> 
+> kiyami_erdim@outlook.com
