@@ -1,3 +1,12 @@
+**Note:** If you use this code for a publication please cite:
+
+- <em>Erdіm, M. Kıyami, and Murat Hüdaverdі. "Asymmetric uncertainties in measurements: SOAD a Python package based on Monte Carlo Simulations." AIP Conference Proceedings. Vol. 2178. No. 1. AIP Publishing LLC, 2019.</em>
+
+https://doi.org/10.1063/1.5135421
+
+Any bug reports and suggestions are all welcomed.
+
+
 # SOAD (Statistics of Asymmetric Distributions)
 
 "soad.uncertainty" module is for handling measurement values with asymmetric uncertainties.
