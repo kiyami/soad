@@ -55,8 +55,11 @@ C = A + B
 ####### Print / Plot the results
 
 print(C)
+
 C.plot_data(show=True, save=False)
+
 C.plot_pdf(show=True, save=True)
+
 C.plot_log_likelihood()
 
 ####### Another calculation
