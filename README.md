@@ -70,4 +70,5 @@ print(D)
 
 M. Kıyami ERDİM
 
-kiyami_erdim@hotmail.com
+mkiyami@yildiz.edu.tr
+kiyami_erdim@outlook.com
