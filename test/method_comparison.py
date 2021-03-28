@@ -158,7 +158,7 @@ class CompareMethods:
     @classmethod
     def plot_results(cls, save=True):
         plt.clf()
-        fig, ax = plt.subplots(figsize=(8, 5.5))
+        fig, ax = plt.subplots(figsize=(4, 2.5))
 
         plot_counter = 0
         colors = ["deepskyblue", "tomato"]
