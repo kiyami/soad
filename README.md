@@ -6,6 +6,7 @@ https://doi.org/10.1063/1.5135421
 
 Any bug reports and suggestions are all welcomed.
 
+#### Installation:
 
 > Type the following commands in terminal:
 >
