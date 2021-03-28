@@ -19,7 +19,7 @@ Any bug reports and suggestions are all welcomed.
     $ cd soad
     $ python3 setup.py install
 
-> After installation, you can remove the downloaded sneratio folder.
+> After installation, you can remove the downloaded soad folder.
 
 #### Usage example:
     >>> from soad import AsymmetricData as asyd
