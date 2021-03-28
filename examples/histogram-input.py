@@ -1,19 +1,20 @@
-from uncertainty import AsymmetricData as asyd
-import random
-import matplotlib.pyplot as plt
+from soad import AsymmetricData as asyd
 import numpy as np
 
-N=50000
-#data_input = [random.normalvariate(20,2) for i in range(N)]
-#data_input = list(np.random.normal(10,1,N))
 
-#a = asyd(creation_type='by_operation', data=data_input)
-#a = asyd(10,1,1,N=N)
-#b = asyd(10,1,1.5,N=N)
-#print(a)
-#a.plot_data_and_pdf(show=True, save=True)
-#a.plot_pdf()
-#print(a)
+N=50000
+
+data_input = list(np.random.normal(10,1,N))
+
+a = asyd(creation_type='by_operation', data=data_input)
+
+
+print(a)
+a.plot_data_and_pdf(show=True, save=False)
+a.plot_pdf()
+
+
+#******* Ignore this part **********
 
 #c=a**0.1
 #print("print c", c)
@@ -47,12 +48,12 @@ data_input = np.concatenate((a.data, b.data, c.data, d.data, e.data, f.data, g.d
 #print("asym x: {}".format((x.sigma_p-x.sigma_n)/(x.sigma_p+x.sigma_n)))
 #x.plot_data_and_pdf()
 
-means = []
+#means = []
 
-for i in range(5000):
-    temp = asyd(10,1.0,1.5,500)
-    temp_mean = np.sum(temp.data)/temp.N
-    means.append(temp_mean)
+#for i in range(5000):
+#    temp = asyd(10,1.0,1.5,500)
+#    temp_mean = np.sum(temp.data)/temp.N
+#    means.append(temp_mean)
 
-plt.hist(means, bins=30)
-plt.show()
+#plt.hist(means, bins=30)
+#plt.show()

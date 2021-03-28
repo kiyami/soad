@@ -1,6 +1,5 @@
-import uncertainty as asym
+from soad import uncertainty as asym
 import matplotlib.pyplot as plt
-import numpy as np
 
 
 class Data:

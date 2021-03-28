@@ -1,6 +1,5 @@
-import uncertainty as asym
+from soad import uncertainty as asym
 import matplotlib.pyplot as plt
-import numpy as np
 
 a = asym.AsymmetricData(20.0, 1.6007810593582121, 1.6007810593582121,N=100000)
 b = asym.AsymmetricData(20.27602675930529, 1.521759265471423, 1.916585620152389,N=100000)

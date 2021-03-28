@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.interpolate as interpolate
 from scipy.optimize import curve_fit
-import random
 import sys
 
 

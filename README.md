@@ -7,9 +7,35 @@ https://doi.org/10.1063/1.5135421
 Any bug reports and suggestions are all welcomed.
 
 
+> Type the following commands in terminal:
+>
+    $ git clone https://github.com/kiyami/soad.git
+    $ pip3 install ./soad
+
+> (Alternative way)
+>
+    $ git clone https://github.com/kiyami/soad.git
+    $ cd soad
+    $ python3 setup.py install
+
+> After installation, you can remove the downloaded sneratio folder.
+
+#### Usage example:
+    >>> from soad import AsymmetricData as asyd
+    >>>
+    >>> a = asyd(10.0, 1.0, 1.2, N=10000)
+    >>> b = asyd(15.0, 2.4, 2.1, N=10000)
+    >>>
+    >>> c = a * b
+    >>> print(c)
+    >>> c.plot_data_and_pdf(show=True, save=False)
+    >>> c.plot_log_likelihood(show=True, save=False)
+    >>>
+
+
 # SOAD (Statistics of Asymmetric Distributions)
 
-"soad.uncertainty" module is for handling measurement values with asymmetric uncertainties.
+"soad" module is for handling measurement values with asymmetric uncertainties.
 
 Measurement values are sampling with a pre-defined Probability Density Function (PDF).
 
@@ -41,7 +67,7 @@ Steps:
 
 #### How to use in Python interactively:
 
-from soad.uncertainty import AsymmetricData
+from soad import AsymmetricData
 
 ####### Initial definitions and random sample generation
 
