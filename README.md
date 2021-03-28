@@ -33,6 +33,9 @@ Any bug reports and suggestions are all welcomed.
     >>> c.plot_log_likelihood(show=True, save=False)
     >>>
 
+![GitHub Logo](/examples/data_and_pdf.png)
+
+![GitHub Logo](/examples/loglikelihood.png)
 
 # SOAD (Statistics of Asymmetric Distributions)
 
