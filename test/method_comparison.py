@@ -185,7 +185,7 @@ class CompareMethods:
         ax.set_facecolor('whitesmoke')
 
         if save:
-            plt.savefig("trial-1.png", dpi=300)
+            plt.savefig("comparison.png", dpi=100)
 
         plt.show()
 

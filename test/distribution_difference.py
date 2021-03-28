@@ -15,7 +15,7 @@ plt.plot(b.x_values,b.pdf_values, color="tomato")
 plt.ylim(ymin=0)
 plt.xlabel("x")
 plt.ylabel("prob")
-plt.savefig("diff.png", dpi=300)
+plt.savefig("diff.png", dpi=100)
 
 def find_match_percent(a, b):
     sum = 0.0
