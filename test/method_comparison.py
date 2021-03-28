@@ -1,6 +1,8 @@
-from soad import uncertainty as asym
+from soad import AsymmetricData as asyd
 import matplotlib.pyplot as plt
 
+
+# This script is prepared for showing the difference between methods of handling asymmetric errors.
 
 class Data:
     control_variable_parameters = [10.0, 1.0, 1.0]
@@ -93,14 +95,14 @@ class AverageMethod:
             print(result.get_params())
 
 class MonteCarloMethod:
-    N = 100000
+    N = 50000
     result_list = []
     control_variable = []
 
     @classmethod
     def generate_control_variable(cls):
         mu, sigma_n, sigma_p = Data.control_variable.get_params()
-        cls.control_variable = asym.AsymmetricData(mu, sigma_n, sigma_p, N=cls.N)
+        cls.control_variable = asyd(mu, sigma_n, sigma_p, N=cls.N)
 
     @classmethod
     def sum(cls, val):
@@ -108,7 +110,7 @@ class MonteCarloMethod:
             cls.generate_control_variable()
 
         mu, sigma_n, sigma_p = val.get_params()
-        asym_val = asym.AsymmetricData(mu, sigma_n, sigma_p, N=cls.N)
+        asym_val = asyd(mu, sigma_n, sigma_p, N=cls.N)
 
         result = cls.control_variable + asym_val
         result_val = [result.mu, result.sigma_n, result.sigma_p]
@@ -120,7 +122,7 @@ class MonteCarloMethod:
             cls.generate_control_variable()
 
         mu, sigma_n, sigma_p = val.get_params()
-        asym_val = asym.AsymmetricData(mu, sigma_n, sigma_p, N=cls.N)
+        asym_val = asyd(mu, sigma_n, sigma_p, N=cls.N)
 
         result = cls.control_variable * asym_val
         cls.result_list.append(result)
@@ -190,16 +192,12 @@ class CompareMethods:
 
 if __name__ == "__main__":
 
-
     Data.set_control_variable()
     generate_multiple_variable()
     Data.print_variables()
-
 
     CompareMethods.calculate_sum()
     #CompareMethods.calculate_mul()
 
     CompareMethods.print_results()
     CompareMethods.plot_results(save=True)
-
-    #T1=Data(10.0, 1.0, 1.0)
