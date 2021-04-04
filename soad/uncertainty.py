@@ -239,6 +239,8 @@ class AsymmetricData:
         plt.ylabel("ln L")
 
         plt.axhline(y=-0.5, color="black", ls="--")
+        plt.axhline(y=-1.0, color="black", ls="--")
+        plt.axhline(y=-2.0, color="black", ls="--")
 
         if save:
             plt.savefig("plot_log_likelihood.png", dpi=300)
