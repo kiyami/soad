@@ -165,7 +165,7 @@ class AsymmetricData:
             if y[i] == max_y:
                 mod = x[i]
 
-        print("mod", mod)
+        #print("mod", mod)
         #print(len(self.data))
         min_data = min(self.data)
         max_data = max(self.data)
@@ -178,7 +178,7 @@ class AsymmetricData:
         params, cov = curve_fit(self.fit_func, x, y, expected, method='trf')
         self.norm = params[0]
         self.mu = params[1]
-        print("params", params)
+        #print("params", params)
         if params[2] > 0.0:
             self.sigma_n = (params[2])
             self.sigma_p = (params[3])
