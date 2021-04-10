@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="soad",
-    version="1.0.0",
+    version="1.1.0",
     author="M.Kıyami ERDİM",
     author_email="kiyami_erdim@outlook.com",
 
