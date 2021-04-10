@@ -14,10 +14,13 @@ class AsymmetricData:
         :param N: Sample size
         """
         self.mu = mu
-        self.sigma_n = sigma_n
-        self.sigma_p = sigma_p
+        self.confidence = confidence  # sigma
+
+        self.sigma_n, self.sigma_p = sigma_n, sigma_p
+        self.sigma2_n, self.sigma2_p = None, None
+        self.sigma3_n, self.sigma3_p = None, None
+
         self.N = int(N)
-        self.confidence = 1.0  # sigma
         self.creation_type = creation_type
 
         if not any(data):
@@ -29,6 +32,21 @@ class AsymmetricData:
         self.bin_value = 50
 
         if str(self.creation_type) == 'by_constructor':
+            if confidence == 1.0:
+                self.sigma_n, self.sigma_p = sigma_n, sigma_p
+                self.sigma2_n, self.sigma2_p = self.convert_from_1_sigma(self.mu, sigma_n, sigma_p, 2.0)
+                self.sigma3_n, self.sigma3_p = self.convert_from_1_sigma(self.mu, sigma_n, sigma_p, 3.0)
+            elif confidence == 2.0:
+                self.sigma_n, self.sigma_p = self.convert_to_1_sigma(self.mu, sigma_n, sigma_p, 2.0)
+                self.sigma2_n, self.sigma2_p = sigma_n, sigma_p
+                self.sigma3_n, self.sigma3_p = self.convert_from_1_sigma(self.mu, self.sigma_n, self.sigma_p, 3.0)
+            elif confidence == 3.0:
+                self.sigma_n, self.sigma_p = self.convert_to_1_sigma(self.mu, sigma_n, sigma_p, 3.0)
+                self.sigma2_n, self.sigma2_p = self.convert_from_1_sigma(self.mu, self.sigma_n, self.sigma_p, 2.0)
+                self.sigma3_n, self.sigma3_p = sigma_n, sigma_p
+            else:
+                raise ValueError
+
             self.x_limits = [self.mu - 5.0*self.sigma_n, self.mu + 5.0*self.sigma_p]
             self.x_values = np.linspace(self.x_limits[0], self.x_limits[1], self.N)
 
@@ -50,6 +68,9 @@ class AsymmetricData:
             self.fit()
             #self.sigma_n, self.sigma_p = self.estimate()
 
+            self.sigma2_n, self.sigma2_p = self.convert_from_1_sigma(self.mu, self.sigma_n, self.sigma_p, 2.0)
+            self.sigma3_n, self.sigma3_p = self.convert_from_1_sigma(self.mu, self.sigma_n, self.sigma_p, 3.0)
+
             self.x_limits = [self.mu - 5.0*self.sigma_n, self.mu + 5.0*self.sigma_p]
             self.x_values = np.linspace(self.x_limits[0], self.x_limits[1], self.N)
 
@@ -62,8 +83,12 @@ class AsymmetricData:
             self.inverse_cdf = self.calculate_inverse_cdf()
 
     def __str__(self):
-        output = "Value = {:.2e} ( - {:.2e} , + {:.2e} )\n({:.1f} sigma confidence interval)"
-        return output.format(self.mu, self.sigma_n, self.sigma_p, self.confidence)
+        output = "Value = {:.2e} ( - {:.2e} , + {:.2e} )\n(1 sigma confidence interval)".format(self.mu, self.sigma_n, self.sigma_p)
+        output2 = "Value = {:.2e} ( - {:.2e} , + {:.2e} )\n(2 sigma confidence interval)".format(self.mu, self.sigma2_n, self.sigma2_p)
+        output3 = "Value = {:.2e} ( - {:.2e} , + {:.2e} )\n(3 sigma confidence interval)".format(self.mu, self.sigma3_n, self.sigma3_p)
+
+        result = "{}\n{}\n{}".format(output, output2, output3)
+        return result
 
     @classmethod
     def new(cls, mu=10.0, sigma_n=1.0, sigma_p=1.0, N=10000):
@@ -87,33 +112,14 @@ class AsymmetricData:
         par_3 = (-1.0/2.0) * ((self.mu - x)/(par_1 + par_2*(x - self.mu)))**2.0
         par_4 = self.norm / (2.0 * np.pi)**0.5
         value = par_4 * np.exp(par_3)
-        """
-        A = self.norm / (2.0 * np.pi) ** 0.5
-        B = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
-        C = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
-        D = (self.mu - x) / ((B + (C * (x - self.mu)))*(2.0**0.5))
-        value = A * np.exp(-D ** 2.0)
 
-        B = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
-        C = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
-        D = (self.mu - x) / (B + (C * (x - self.mu)))
-        A = self.norm / (2.0 * np.pi * (B + (C * (x - self.mu)))**2.0) ** 0.5
-        value = A * np.exp(-D ** 2.0)
-        """
         return value
 
     def log_likelihood(self, x):
         par_1 = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
         par_2 = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
         value = (-1.0/2.0) * ((self.mu - x)/(par_1 + par_2*(x - self.mu)))**2.0
-        """
-        A = -1.0 / 2.0
-        B = (2.0 * self.sigma_p * self.sigma_n) / (self.sigma_p + self.sigma_n)
-        C = (self.sigma_p - self.sigma_n) / (self.sigma_p + self.sigma_n)
-        D = (self.mu - x) / (B + C * (x - self.mu))
-        value = A * D ** 2.0
-        return value
-        """
+
         return value
 
     def calculate_cdf_values(self):
@@ -137,11 +143,6 @@ class AsymmetricData:
     def generate(self):
         rnd_prob = np.random.uniform(0, 1, self.N)
         self.data = self.inverse_cdf(rnd_prob)
-        """
-        for i in range(self.N):
-            rnd_prob = random.uniform(0, 1)
-            self.data = np.append(self.data, self.inverse_cdf(rnd_prob))
-        """
 
     @staticmethod
     def fit_func(x, norm, mu, sigma_n, sigma_p):
@@ -150,14 +151,7 @@ class AsymmetricData:
         par_3 = (-1.0 / 2.0) * ((mu - x) / (par_1 + par_2 * (x - mu))) ** 2.0
         par_4 = norm / (2.0 * np.pi) ** 0.5
         value = par_4 * np.exp(par_3)
-        """
-        A = norm / (2.0 * np.pi) ** 0.5
-        B = (2.0 * sigma_p * sigma_n) / (sigma_p + sigma_n)
-        C = (sigma_p - sigma_n) / (sigma_p + sigma_n)
-        D = (mu - x) / ((B + (C * (x - mu)))*(2.0**0.5))
-        gau = A * np.exp(-D ** 2.0)
-        return gau
-        """
+
         return value
 
     def fit(self, expected_values=None):
@@ -171,7 +165,7 @@ class AsymmetricData:
             if y[i] == max_y:
                 mod = x[i]
 
-        print("mod", mod)
+        #print("mod", mod)
         #print(len(self.data))
         min_data = min(self.data)
         max_data = max(self.data)
@@ -184,7 +178,7 @@ class AsymmetricData:
         params, cov = curve_fit(self.fit_func, x, y, expected, method='trf')
         self.norm = params[0]
         self.mu = params[1]
-        print("params", params)
+        #print("params", params)
         if params[2] > 0.0:
             self.sigma_n = (params[2])
             self.sigma_p = (params[3])
@@ -217,7 +211,6 @@ class AsymmetricData:
         return [self.mu - negative_limit, positive_limit - self.mu]
 
     def plot_pdf(self, show=True, save=False):
-
         plt.clf()
         plt.plot(self.x_values, self.pdf_values, color="blue")
 
@@ -239,8 +232,8 @@ class AsymmetricData:
         plt.ylabel("ln L")
 
         plt.axhline(y=-0.5, color="black", ls="--")
-        plt.axhline(y=-1.0, color="black", ls="--")
         plt.axhline(y=-2.0, color="black", ls="--")
+        plt.axhline(y=-4.5, color="black", ls="--")
 
         if save:
             plt.savefig("plot_log_likelihood.png", dpi=300)
@@ -404,3 +397,91 @@ class AsymmetricData:
             sys.exit()
         temp_obj = AsymmetricData(creation_type='by_operation', data=add)
         return temp_obj
+
+    @staticmethod
+    def lnL(x, mu, sigma_n, sigma_p):
+        par_1 = (2.0 * sigma_p * sigma_n) / (sigma_p + sigma_n)
+        par_2 = (sigma_p - sigma_n) / (sigma_p + sigma_n)
+        value = (-1.0 / 2.0) * ((mu - x) / (par_1 + par_2 * (x - mu))) ** 2.0
+
+        return value
+
+    @staticmethod
+    def residual(params1, mu, n3, p3, confidence):
+        n1, p1 = params1
+
+        if confidence == 1.0:
+            target_likelihood = -0.5
+        elif confidence == 2.0:
+            target_likelihood = -2.0
+        elif confidence == 3.0:
+            target_likelihood = -4.5
+        else:
+            target_likelihood = -0.5
+            print("Something went wrong!")
+
+        resid = (AsymmetricData.lnL(mu - n3, mu, n1, p1) - target_likelihood) ** 2.0 + (
+                    AsymmetricData.lnL(mu + p3, mu, n1, p1) - target_likelihood) ** 2.0
+        return resid
+
+    @staticmethod
+    def convert_to_1_sigma(mu, n, p, confidence):
+        N = 500
+        n_range = np.linspace(1e-5, n, N)
+        p_range = np.linspace(1e-5, p, N)
+
+        np_matrix = np.zeros([n_range.shape[0], p_range.shape[0]])
+
+        for i in range(n_range.shape[0]):
+            for j in range(p_range.shape[0]):
+                np_matrix[i, j] = np.log(AsymmetricData.residual([n_range[i], p_range[j]], mu, n, p, confidence))
+
+        min_val = np_matrix.min()
+        index_n, index_p = np.where(np_matrix == min_val)
+
+        n_new, p_new = n_range[index_n[0]], p_range[index_p[0]]
+
+        #print("")
+        #print("# Converting to 1 sigma")
+        #print("# {} (-{},+{}) ({} sigma) -> {} (-{},+{}) ({} sigma)".format(mu, n, p, confidence, mu, n_new, p_new, 1.0))
+
+        return [n_new, p_new]
+
+    @staticmethod
+    def convert_from_1_sigma(mu, sigma_n, sigma_p, confidence):
+        if confidence == 1.0:
+            target_likelihood = -0.5
+        elif confidence == 2.0:
+            target_likelihood = -2.0
+        elif confidence == 3.0:
+            target_likelihood = -4.5
+        else:
+            target_likelihood = -0.5
+
+        delta_steps = 1e-4
+
+        current_value = mu
+        delta = abs(mu - sigma_p) * delta_steps
+        current_likelihood = AsymmetricData.lnL(current_value, mu, sigma_n, sigma_p)
+
+        while abs(current_likelihood) < abs(target_likelihood):
+            current_value += delta
+            current_likelihood = AsymmetricData.lnL(current_value, mu, sigma_n, sigma_p)
+        positive_limit = current_value
+
+        current_value = mu
+        delta = abs(mu - sigma_n) * delta_steps
+        current_likelihood = AsymmetricData.lnL(current_value, mu, sigma_n, sigma_p)
+
+        while abs(current_likelihood) < abs(target_likelihood):
+            current_value -= delta
+            current_likelihood = AsymmetricData.lnL(current_value, mu, sigma_n, sigma_p)
+        negative_limit = current_value
+
+        n_new, p_new = mu - negative_limit, positive_limit - mu
+
+        #print("")
+        #print("# Converting from 1 sigma")
+        #print("# {} (-{},+{}) ({} sigma) -> {} (-{},+{}) ({} sigma)".format(mu, sigma_n, sigma_p, 1.0, mu, n_new, p_new, confidence))
+
+        return [n_new, p_new]
