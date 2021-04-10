@@ -1,12 +1,7 @@
 from soad import AsymmetricData as asyd
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.optimize import leastsq
-import matplotlib.pyplot as plt
 
-a=asyd(10,1.0,1.5,10000)
-
-#a.plot_log_likelihood(show=True, save=False)
 
 def lnL(x, mu, sigma_n, sigma_p):
     par_1 = (2.0 * sigma_p * sigma_n) / (sigma_p + sigma_n)
@@ -51,13 +46,8 @@ def convert_to_1_sigma(mu, n, p, confidence):
     print("# Converting to 1 sigma")
     print("# {} (-{},+{}) ({} sigma) -> {:.3} (-{:.3},+{:.3}) ({} sigma)".format(mu,n,p,confidence,mu,n_new,p_new,1.0))
 
-    # print(np_matrix)
-    #print(min_val, index_n[0], n_range[index_n[0]], index_p[0], p_range[index_p[0]])
-
-    #plt.imshow(np_matrix)
-    #plt.show()
-
     return [n_new, p_new]
+
 
 def convert_from_1_sigma(mu, sigma_n, sigma_p, confidence):
     if confidence == 1.0:
@@ -109,7 +99,7 @@ def convert_from_1_sigma(mu, sigma_n, sigma_p, confidence):
 #convert_from_1_sigma(10.0,1.0,1.5,3.0)
 
 
-def convert_to_1_sigma_fast(mu, nerr, perr, confidence):
+def convert_to_1_sigma(mu, nerr, perr, confidence):
     if confidence == 1.0:
         target_likelihood = -0.5
     elif confidence == 2.0:
@@ -141,5 +131,5 @@ def convert_to_1_sigma_fast(mu, nerr, perr, confidence):
 convert_from_1_sigma(10.0, 1.0, 1.1, 2.0)
 convert_from_1_sigma(10.0, 1.0, 1.1, 3.0)
 
-convert_to_1_sigma_fast(10.0, 1.91, 2.32, 2.0)
-convert_to_1_sigma_fast(10.0, 2.75, 3.67, 3.0)
+convert_to_1_sigma(10.0, 1.91, 2.32, 2.0)
+convert_to_1_sigma(10.0, 2.75, 3.67, 3.0)
