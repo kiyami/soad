@@ -231,9 +231,9 @@ class AsymmetricData:
         plt.xlabel("x")
         plt.ylabel("ln L")
 
-        plt.axhline(y=-0.5, color="black", ls="--", lw="2.0", label="{:.3} (-{:.3},+{:.3}) (1.0 $\sigma$)".format(self.mu,self.sigma_n,self.sigma_p))
-        plt.axhline(y=-2.0, color="black", ls="--", lw="1.5", label="{:.3} (-{:.3},+{:.3}) (2.0 $\sigma$)".format(self.mu,self.sigma2_n,self.sigma2_p))
-        plt.axhline(y=-4.5, color="black", ls="--", lw="1.0", label="{:.3} (-{:.3},+{:.3}) (3.0 $\sigma$)".format(self.mu,self.sigma3_n,self.sigma3_p))
+        plt.axhline(y=-0.5, color="black", ls="--", lw="2.0", label="{:.4} (-{:.4},+{:.4}) (1.0 $\sigma$)".format(self.mu,self.sigma_n,self.sigma_p))
+        plt.axhline(y=-2.0, color="black", ls="--", lw="1.5", label="{:.4} (-{:.4},+{:.4}) (2.0 $\sigma$)".format(self.mu,self.sigma2_n,self.sigma2_p))
+        plt.axhline(y=-4.5, color="black", ls="--", lw="1.0", label="{:.4} (-{:.4},+{:.4}) (3.0 $\sigma$)".format(self.mu,self.sigma3_n,self.sigma3_p))
 
         plt.legend()
 
@@ -277,15 +277,15 @@ class AsymmetricData:
         plt.ylabel("Prob.")
 
         plt.axvline(x=self.mu - self.sigma_n, color="black", ls="--", lw="1.5",
-                    label="{:.3} (-{:.3},+{:.3}) (1.0 $\sigma$)".format(self.mu, self.sigma_n, self.sigma_p))
+                    label="{:.4} (-{:.4},+{:.4}) (1.0 $\sigma$)".format(self.mu, self.sigma_n, self.sigma_p))
         plt.axvline(x=self.mu + self.sigma_p, color="black", ls="--", lw="1.5")
 
         plt.axvline(x=self.mu - self.sigma2_n, color="black", ls="--", lw="1.0",
-                    label="{:.3} (-{:.3},+{:.3}) (2.0 $\sigma$)".format(self.mu, self.sigma2_n, self.sigma2_p))
+                    label="{:.4} (-{:.4},+{:.4}) (2.0 $\sigma$)".format(self.mu, self.sigma2_n, self.sigma2_p))
         plt.axvline(x=self.mu + self.sigma2_p, color="black", ls="--", lw="1.0")
 
         plt.axvline(x=self.mu - self.sigma3_n, color="black", ls="--", lw="0.5",
-                    label="{:.3} (-{:.3},+{:.3}) (3.0 $\sigma$)".format(self.mu, self.sigma3_n, self.sigma3_p))
+                    label="{:.4} (-{:.4},+{:.4}) (3.0 $\sigma$)".format(self.mu, self.sigma3_n, self.sigma3_p))
         plt.axvline(x=self.mu + self.sigma3_p, color="black", ls="--", lw="0.5")
 
         plt.legend()
