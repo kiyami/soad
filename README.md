@@ -24,8 +24,8 @@ Any bug reports and suggestions are all welcomed.
 #### Usage example:
     >>> from soad import AsymmetricData as asyd
     >>>
-    >>> a = asyd(10.0, 1.0, 1.2, N=10000)
-    >>> b = asyd(15.0, 2.4, 2.1, N=10000)
+    >>> a = asyd(10.0, 1.0, 1.2, N=10000, confidence=1.0)
+    >>> b = asyd(15.0, 2.4, 2.1, N=10000, confidence=1.0)
     >>>
     >>> c = a * b
     >>> print(c)
@@ -37,7 +37,7 @@ Any bug reports and suggestions are all welcomed.
 
 ![GitHub Logo](/examples/loglikelihood.png)
 
-# SOAD (Statistics of Asymmetric Distributions)
+## SOAD (Statistics of Asymmetric Distributions)
 
 "soad" module is for handling measurement values with asymmetric uncertainties.
 
@@ -71,35 +71,51 @@ Steps:
 
 #### How to use in Python interactively:
 
-from soad import AsymmetricData
+    >>> # import package    
+    >>> from soad import AsymmetricData as asyd
+    >>>
+    >>> # Initial definitions and random sample generation
+    >>> # asyd(mean, negative sigma, positive sigma, sample size, confidence interval)
+    >>> A = asyd(10, 0.5, 1.2, N=100000, confidence=1.0)
+    >>> B = asyd(12, 0.9, 0.7, N=100000, confidence=1.0)
+    >>> 
+    >>> # Do the calculation
+    >>> C = A + B
+    >>>
+    >>> # Print / Plot the results
+    >>> print(C)
+    >>>
+    >>> # plot results
+    >>> C.plot_data(show=True, save=False)
+    >>> C.plot_pdf(show=True, save=True)
+    >>> C.plot_log_likelihood()
+    >>>
+    >>> # Another calculation
+    >>> D = (0.5 * A)**0.5 + (B / 2)**2.0
+    >>>
+    >>> print(D)
+    >>>
 
-####### Initial definitions and random sample generation
+#### Confidence Intervals:
+* SOAD package supports 1.0, 2.0 and 3.0 sigma confidence intervals. 
+  
+* Default confidence level is 1.0 sigma.
 
-A = AsymmetricData(10,0.5,1.2,N=100000) # (mean, negative sigma, positive sigma, sample size)
+* The confidence value can be given as input within data creation:
+  
 
-B = AsymmetricData(10,0.5,1.2,N=100000)
+    >>> A = asyd(10, 0.5, 1.2, N=100000, confidence=1.0)  # a data with 1 sigma conf.
+    >>> A = asyd(10, 0.5, 1.2, N=100000, confidence=2.0)  # a data with 2 sigma conf.
 
-####### Do the calculation
-
-C = A + B
-
-####### Print / Plot the results
-
-print(C)
-
-C.plot_data(show=True, save=False)
-
-C.plot_pdf(show=True, save=True)
-
-C.plot_log_likelihood()
-
-####### Another calculation
-
-D = (0.5 * A)**0.5 + (B / 2)**2.0
-
-print(D)
+* Printing the data shows error values for each confidence level:
 
 
+    >>> A = asyd(10.0, 1.0, 1.2, N=10000, confidence=1.0)
+    >>> print(a)
+
+    Value = 1.00e+01 ( - 1.00e+00 , + 1.20e+00 ) (1 sigma)
+    Value = 1.00e+01 ( - 1.85e+00 , + 2.67e+00 ) (2 sigma)
+    Value = 1.00e+01 ( - 2.57e+00 , + 4.50e+00 ) (3 sigma)
 
 #### Author
 

@@ -226,14 +226,16 @@ class AsymmetricData:
     def plot_log_likelihood(self, show=True, save=False):
         plt.clf()
         plt.plot(self.x_values, self.log_likelihood(self.x_values))
-        plt.ylim([-5, 0.5])
+        plt.ylim([-5, 1.5])
 
         plt.xlabel("x")
         plt.ylabel("ln L")
 
-        plt.axhline(y=-0.5, color="black", ls="--")
-        plt.axhline(y=-2.0, color="black", ls="--")
-        plt.axhline(y=-4.5, color="black", ls="--")
+        plt.axhline(y=-0.5, color="black", ls="--", lw="2.0", label="{:.3} (-{:.3},+{:.3}) (1.0 $\sigma$)".format(self.mu,self.sigma_n,self.sigma_p))
+        plt.axhline(y=-2.0, color="black", ls="--", lw="1.5", label="{:.3} (-{:.3},+{:.3}) (2.0 $\sigma$)".format(self.mu,self.sigma2_n,self.sigma2_p))
+        plt.axhline(y=-4.5, color="black", ls="--", lw="1.0", label="{:.3} (-{:.3},+{:.3}) (3.0 $\sigma$)".format(self.mu,self.sigma3_n,self.sigma3_p))
+
+        plt.legend()
 
         if save:
             plt.savefig("plot_log_likelihood.png", dpi=300)
@@ -270,6 +272,23 @@ class AsymmetricData:
         plt.clf()
         plt.hist(self.data, bins=bins, density=True, color="green", alpha=0.6)
         plt.plot(self.x_values, self.pdf_values, color="blue")
+
+        plt.xlabel("x")
+        plt.ylabel("Prob.")
+
+        plt.axvline(x=self.mu - self.sigma_n, color="black", ls="--", lw="1.5",
+                    label="{:.3} (-{:.3},+{:.3}) (1.0 $\sigma$)".format(self.mu, self.sigma_n, self.sigma_p))
+        plt.axvline(x=self.mu + self.sigma_p, color="black", ls="--", lw="1.5")
+
+        plt.axvline(x=self.mu - self.sigma2_n, color="black", ls="--", lw="1.0",
+                    label="{:.3} (-{:.3},+{:.3}) (2.0 $\sigma$)".format(self.mu, self.sigma2_n, self.sigma2_p))
+        plt.axvline(x=self.mu + self.sigma2_p, color="black", ls="--", lw="1.0")
+
+        plt.axvline(x=self.mu - self.sigma3_n, color="black", ls="--", lw="0.5",
+                    label="{:.3} (-{:.3},+{:.3}) (3.0 $\sigma$)".format(self.mu, self.sigma3_n, self.sigma3_p))
+        plt.axvline(x=self.mu + self.sigma3_p, color="black", ls="--", lw="0.5")
+
+        plt.legend()
 
         if save:
             plt.savefig("plot_data_and_pdf.png", dpi=300)
