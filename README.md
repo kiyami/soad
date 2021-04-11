@@ -127,6 +127,23 @@ Steps:
         Value = 1.00e+01 ( - 1.00e+00 , + 1.20e+00 ) (2 sigma)
         Value = 1.00e+01 ( - 1.44e+00 , + 1.89e+00 ) (3 sigma)
 
+#### Limitations:
+
+* Highly asymmetric uncertainties can not be represented well with the current PDF.
+Always check your data and likelihood plots.
+  
+
+    As an example, let A=10.0(-2.0,+3.9) with 1.0 sigma confidence level,
+
+    In this case 3.0 sigma uncertainties are calculated as '-4.0352' and '+234.0003' by the package,
+    which is not accurate.
+
+    If '+3.9' value becomes '+4.0' then the positive uncertainty with 3.0 sigma confidence will goes to infinity.
+
+* Multiplication, division or power operations with negative values (mu < 0) shouldn't be used with the current
+  version of the package due to getting unexpected results. The same is true for values approaching or exceeding zero
+  along with the error range, even if the mean value is not zero.
+
 #### Author:
 
 > M. Kıyami ERDİM

@@ -83,9 +83,9 @@ class AsymmetricData:
             self.inverse_cdf = self.calculate_inverse_cdf()
 
     def __str__(self):
-        output = "Value = {:.2e} ( - {:.2e} , + {:.2e} )\n(1 sigma confidence interval)".format(self.mu, self.sigma_n, self.sigma_p)
-        output2 = "Value = {:.2e} ( - {:.2e} , + {:.2e} )\n(2 sigma confidence interval)".format(self.mu, self.sigma2_n, self.sigma2_p)
-        output3 = "Value = {:.2e} ( - {:.2e} , + {:.2e} )\n(3 sigma confidence interval)".format(self.mu, self.sigma3_n, self.sigma3_p)
+        output = f"Value = {self.mu:.4f} (-{self.sigma_n:.4f}, +{self.sigma_p:.4f}) (1 sigma)"
+        output2 = f"Value = {self.mu:.4f} (-{self.sigma2_n:.4f}, +{self.sigma2_p:.4f}) (2 sigma)"
+        output3 = f"Value = {self.mu:.4f} (-{self.sigma3_n:.4f}, +{self.sigma3_p:.4f}) (3 sigma)"
 
         result = "{}\n{}\n{}".format(output, output2, output3)
         return result
@@ -231,9 +231,9 @@ class AsymmetricData:
         plt.xlabel("x")
         plt.ylabel("ln L")
 
-        plt.axhline(y=-0.5, color="black", ls="--", lw="2.0", label="{:.4} (-{:.4},+{:.4}) (1.0 $\sigma$)".format(self.mu,self.sigma_n,self.sigma_p))
-        plt.axhline(y=-2.0, color="black", ls="--", lw="1.5", label="{:.4} (-{:.4},+{:.4}) (2.0 $\sigma$)".format(self.mu,self.sigma2_n,self.sigma2_p))
-        plt.axhline(y=-4.5, color="black", ls="--", lw="1.0", label="{:.4} (-{:.4},+{:.4}) (3.0 $\sigma$)".format(self.mu,self.sigma3_n,self.sigma3_p))
+        plt.axhline(y=-0.5, color="black", ls="--", lw="2.0", label=f"Value = {self.mu:.4f} (-{self.sigma_n:.4f}, +{self.sigma_p:.4f}) (1 sigma)")
+        plt.axhline(y=-2.0, color="black", ls="--", lw="1.5", label=f"Value = {self.mu:.4f} (-{self.sigma2_n:.4f}, +{self.sigma2_p:.4f}) (2 sigma)")
+        plt.axhline(y=-4.5, color="black", ls="--", lw="1.0", label=f"Value = {self.mu:.4f} (-{self.sigma3_n:.4f}, +{self.sigma3_p:.4f}) (3 sigma)")
 
         plt.legend()
 
@@ -277,15 +277,15 @@ class AsymmetricData:
         plt.ylabel("Prob.")
 
         plt.axvline(x=self.mu - self.sigma_n, color="black", ls="--", lw="1.5",
-                    label="{:.4} (-{:.4},+{:.4}) (1.0 $\sigma$)".format(self.mu, self.sigma_n, self.sigma_p))
+                    label=f"Value = {self.mu:.4f} (-{self.sigma_n:.4f}, +{self.sigma_p:.4f}) (1 sigma)")
         plt.axvline(x=self.mu + self.sigma_p, color="black", ls="--", lw="1.5")
 
         plt.axvline(x=self.mu - self.sigma2_n, color="black", ls="--", lw="1.0",
-                    label="{:.4} (-{:.4},+{:.4}) (2.0 $\sigma$)".format(self.mu, self.sigma2_n, self.sigma2_p))
+                    label=f"Value = {self.mu:.4f} (-{self.sigma2_n:.4f}, +{self.sigma2_p:.4f}) (2 sigma)")
         plt.axvline(x=self.mu + self.sigma2_p, color="black", ls="--", lw="1.0")
 
         plt.axvline(x=self.mu - self.sigma3_n, color="black", ls="--", lw="0.5",
-                    label="{:.4} (-{:.4},+{:.4}) (3.0 $\sigma$)".format(self.mu, self.sigma3_n, self.sigma3_p))
+                    label=f"Value = {self.mu:.4f} (-{self.sigma3_n:.4f}, +{self.sigma3_p:.4f}) (3 sigma)")
         plt.axvline(x=self.mu + self.sigma3_p, color="black", ls="--", lw="0.5")
 
         plt.legend()
