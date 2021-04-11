@@ -107,19 +107,23 @@ Steps:
 
 * The confidence value can be given as input within data creation:
   
-
-    >>> A = asyd(10, 0.5, 1.2, N=100000, confidence=1.0)  # a data with 1 sigma conf.
-    >>> A = asyd(10, 0.5, 1.2, N=100000, confidence=2.0)  # a data with 2 sigma conf.
+    > A = asyd(10, 0.5, 1.2, N=100000, confidence=1.0)  # a data with 1 sigma conf.
+    >
+    > A = asyd(10, 0.5, 1.2, N=100000, confidence=2.0)  # a data with 2 sigma conf.
 
 * Printing the data shows error values for each confidence level:
 
 
-    >>> A = asyd(10.0, 1.0, 1.2, N=10000, confidence=1.0)
-    >>> print(a)
 
-    Value = 1.00e+01 ( - 1.00e+00 , + 1.20e+00 ) (1 sigma)
-    Value = 1.00e+01 ( - 1.85e+00 , + 2.67e+00 ) (2 sigma)
-    Value = 1.00e+01 ( - 2.57e+00 , + 4.50e+00 ) (3 sigma)
+    > A = asyd(10.0, 1.0, 1.2, N=10000, confidence=1.0)
+    >
+    > print(a)
+
+    > Value = 1.00e+01 ( - 1.00e+00 , + 1.20e+00 ) (1 sigma)
+    >
+    > Value = 1.00e+01 ( - 1.85e+00 , + 2.67e+00 ) (2 sigma)
+    >
+    >Value = 1.00e+01 ( - 2.57e+00 , + 4.50e+00 ) (3 sigma)
 
 #### Author
 
