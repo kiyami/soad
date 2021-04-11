@@ -61,6 +61,8 @@ Selected PDF to represent asymmetric data is **"Variable Gaussian"** which is de
 These operations can be used between "AsymmetricData" objects
 or between an "AsymmetricData" object and an integer/float value.
 
+(See **Limitations** of the package before using.)
+
 
 #### Example:
 Let "A" and "B" two measured quantity with asymmetric uncertainties:
