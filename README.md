@@ -149,4 +149,5 @@ Always check your data and likelihood plots.
 > M. Kıyami ERDİM
 > 
 > mkiyami@yildiz.edu.tr
+> 
 > kiyami_erdim@outlook.com
