@@ -1,3 +1,5 @@
+## SOAD (Statistics of Asymmetric Distributions)
+
 **Note:** If you use this code for a publication please cite:
 
 - <em>Erdіm, M. Kıyami, and Murat Hüdaverdі. "Asymmetric uncertainties in measurements: SOAD a Python package based on Monte Carlo Simulations." AIP Conference Proceedings. Vol. 2178. No. 1. AIP Publishing LLC, 2019.</em>
@@ -7,6 +9,7 @@ https://doi.org/10.1063/1.5135421
 Any bug reports and suggestions are all welcomed.
 
 #### Installation:
+> This package requires python3.
 
 > Type the following commands in terminal:
 >
@@ -19,7 +22,7 @@ Any bug reports and suggestions are all welcomed.
     $ cd soad
     $ python3 setup.py install
 
-> After installation, you can remove the downloaded soad folder.
+> After installation, you can remove the downloaded 'soad' folder.
 
 #### Usage example:
     >>> from soad import AsymmetricData as asyd
@@ -35,24 +38,24 @@ Any bug reports and suggestions are all welcomed.
 
 
 
-![GitHub Logo](/examples/plot_data_and_pdf.png)
+![GitHub Logo](/examples/plot_data_and_pdf.png "Logo Title Text 1")
 
 
-![GitHub Logo](/examples/plot_loglikelihood.png)
+![GitHub Logo](/examples/plot_loglikelihood.png "Logo Title Text 1")
 
 
 ## SOAD (Statistics of Asymmetric Distributions)
 
-"soad" module is for handling measurement values with asymmetric uncertainties.
+**"soad"** module is for handling measurement values with asymmetric uncertainties.
 
 Measurement values are sampling with a pre-defined Probability Density Function (PDF).
 
 And the result of the desired mathematical operation is applied to the values by Monte Carlo simulation.
 
-Selected PDF to represent asymmetric data is "Variable Gaussian" which is defined by "Roger Barlow" in the article "Asymmetric Statistical Errors" (2004).
+Selected PDF to represent asymmetric data is **"Variable Gaussian"** which is defined by **"Roger Barlow"** in the article **"Asymmetric Statistical Errors" (2004)**.
 
 
-Defined operations:
+**Defined operations:**
 [sum, subtract, multiply, divide, power], [+, -, x, /, **]
 
 These operations can be used between "AsymmetricData" objects
@@ -113,22 +116,20 @@ Steps:
 
 * Printing the data shows error values for each confidence level:
 
+        >>> A = asyd(10.0, 1.0, 1.2, N=10000, confidence=2.0)
+        >>>
+        >>> print(a)
+        >>>
 
+    Output:
 
-    > A = asyd(10.0, 1.0, 1.2, N=10000, confidence=1.0)
-    >
-    > print(a)
+        Value = 1.00e+01 ( - 5.21e-01 , + 5.70e-01 ) (1 sigma)
+        Value = 1.00e+01 ( - 1.00e+00 , + 1.20e+00 ) (2 sigma)
+        Value = 1.00e+01 ( - 1.44e+00 , + 1.89e+00 ) (3 sigma)
 
-    > Value = 1.00e+01 ( - 1.00e+00 , + 1.20e+00 ) (1 sigma)
-    >
-    > Value = 1.00e+01 ( - 1.85e+00 , + 2.67e+00 ) (2 sigma)
-    >
-    >Value = 1.00e+01 ( - 2.57e+00 , + 4.50e+00 ) (3 sigma)
-
-#### Author
+#### Author:
 
 > M. Kıyami ERDİM
 > 
 > mkiyami@yildiz.edu.tr
-> 
 > kiyami_erdim@outlook.com
