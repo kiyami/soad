@@ -85,7 +85,7 @@ Steps:
     >>>
     >>> # Initial definitions and random sample generation
     >>> # asyd(mean, negative sigma, positive sigma, sample size, confidence interval)
-    >>> A = asyd(10, 0.5, 1.2, N=100000, confidence=1.0)
+    >>> A = asyd(10, 0.5, 0.8, N=100000, confidence=1.0)
     >>> B = asyd(12, 0.9, 0.7, N=100000, confidence=1.0)
     >>> 
     >>> # Do the calculation
