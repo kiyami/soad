@@ -67,9 +67,9 @@ or between an "AsymmetricData" object and an integer/float value.
 #### Example:
 Let "A" and "B" two measured quantity with asymmetric uncertainties:
 
-A=10(-0.5,+1.2)
+A=10(-1.5,+1.2)
 
-B=20(-0.4,0.9)
+B=20(-0.6,+0.9)
 
 And we want to calculate "C=A+B" value.
 
